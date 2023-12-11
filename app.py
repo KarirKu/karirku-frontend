@@ -1,11 +1,15 @@
 import os
-from flask import Flask, render_template, send_from_directory, request, redirect, url_for, make_response
 import requests
+from dotenv import load_dotenv
+from flask import Flask, render_template, send_from_directory, request, redirect, url_for, make_response
 
 from routes.lowongan_kerja import lowongan_kerja_blueprint
 
+load_dotenv()
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32).hex()
+app.config['BACKEND_URL'] = os.environ.get('BACKEND_URL', 'http://localhost:8000')
 
 app.register_blueprint(lowongan_kerja_blueprint)
 
