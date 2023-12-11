@@ -23,7 +23,11 @@
 
                 <div class="flex p-1">
                     <button onclick="submitCerita()" type="submit" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                        {% if check == True %}
                         Buat Cerita
+                        {% else %}
+                        Ubah Cerita
+                        {% endif %}
                     </button>
                 </div>
             </div>
@@ -130,32 +134,36 @@
         let judul = document.getElementById('judul').value;
         let isi = document.getElementById('isi').value;
 
-        if ('{{ check }}' == "True") {
-            methods = "POST";
-        } else {
-            methods = "PATCH";
-        }
-
-        try {
-            const request = new Request("https://karirku-backend.meervix.com/cerita-alumni/new/", {
-                method: methods,
-                body: JSON.stringify({"judul": judul, "isi": isi}),
-                headers: {'Authorization': `Bearer ${getCookie("access_token")}`, 'Content-Type': 'application/json'},
-            });
-
-            const response = await fetch(request);
-
-            if (response.status != 201) {
-                throw new Error("Error status");
-            }
-            
-            const result = await response.json();
-
-            success_modal.style.display = "block";
-            // console.log(result.id)
-            document.getElementById("flag").innerHTML = `/cerita-alumni/detail/${result.id}`;
-        } catch (error) {
+        if ((judul == null || judul == "") && (isi == null || isi == "")){
             failed_modal.style.display = "block";
+        } else {
+            if ('{{ check }}' == "True") {
+                methods = "POST";
+            } else {
+                methods = "PATCH";
+            }
+
+            try {
+                const request = new Request("https://karirku-backend.meervix.com/cerita-alumni/new/", {
+                    method: methods,
+                    body: JSON.stringify({"judul": judul, "isi": isi}),
+                    headers: {'Authorization': `Bearer ${getCookie("access_token")}`, 'Content-Type': 'application/json'},
+                });
+
+                const response = await fetch(request);
+
+                if (response.status != 201) {
+                    throw new Error("Error status");
+                }
+                
+                const result = await response.json();
+
+                success_modal.style.display = "block";
+                // console.log(result.id)
+                document.getElementById("flag").innerHTML = `/cerita-alumni/detail/${result.id}`;
+            } catch (error) {
+                failed_modal.style.display = "block";
+            }
         }
     }
 
