@@ -23,7 +23,7 @@
       
       const deleteButton = `<button
           class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline-red active:bg-red-700"
-          onclick="window.open('/lowongan-kerja/{{ lowongan_kerja_id }}/edit')"
+          onclick="location.href='/lowongan-kerja/{{ lowongan_kerja_id }}/delete'"
         >
           Hapus
         </button>
@@ -69,7 +69,7 @@
   async function updateLowonganKerja() {
       let user = undefined;
       try {
-          const response = await fetch('{{ config.BACKEND_URL }}/user/', {
+          const response = await fetch('https://karirku-backend.meervix.com/user/', {
             headers: {
               'Authorization': 'Bearer ' + Cookies.get('access_token'),
             }
@@ -84,7 +84,7 @@
       
       const idToKarier = {};
       try {
-          const response = await fetch('{{ config.BACKEND_URL }}/informasi-karier/all/');
+          const response = await fetch('https://karirku-backend.meervix.com/informasi-karier/all/');
           if (!response.ok) {
               throw new Error('Failed to fetch karier from server.');
           }
@@ -98,7 +98,7 @@
       
       let loker = {};
       try {
-          const response = await fetch('{{ config.BACKEND_URL }}/lowongan-kerja/detail/{{ lowongan_kerja_id }}/');
+          const response = await fetch('https://karirku-backend.meervix.com/lowongan-kerja/detail/{{ lowongan_kerja_id }}/');
           if (!response.ok) {
               throw new Error('Failed to fetch lowongan kerja from server.');
           }
@@ -109,7 +109,7 @@
       
       let alumni = {};
       try {
-          const response = await fetch(`{{ config.BACKEND_URL }}/user/${loker.alumni}/`);
+          const response = await fetch(`https://karirku-backend.meervix.com/user/${loker.alumni}/`);
           if (!response.ok) {
               throw new Error('Failed to fetch alumni from server.');
           }
