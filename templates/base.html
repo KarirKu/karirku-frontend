@@ -21,6 +21,37 @@
                 
                 return `${day} ${month} ${year}`;
             }
+            
+            function convertISOToDateTimeFormatted(isoDate) {
+                const date = new Date(isoDate);
+                
+                const indonesianMonths = [
+                "Januari", "Februari", "Maret", "April",
+                "Mei", "Juni", "Juli", "Agustus",
+                "September", "Oktober", "November", "Desember"
+                ];
+                
+                const day = date.getDate();
+                const month = indonesianMonths[date.getMonth()];
+                const year = date.getFullYear();
+                const hours = date.getHours();
+                const minutes = date.getMinutes();
+                
+                return `${day} ${month} ${year} ${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+            }
+            
+            function convertISOToInputFormat(isoDate) {
+                const dateObject = new Date(isoDate);
+                
+                const year = dateObject.getFullYear();
+                const month = String(dateObject.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+                const day = String(dateObject.getDate()).padStart(2, '0');
+                
+                const hours = String(dateObject.getHours()).padStart(2, '0');
+                const minutes = String(dateObject.getMinutes()).padStart(2, '0');
+                
+                return `${year}-${month}-${day}T${hours}:${minutes}`;
+            }
         </script>
         {% block head %}
         {% endblock %}
@@ -29,9 +60,15 @@
         <nav class="fixed p-4 flex flex-row w-full h-[48px] bg-white font-bold items-center justify-between shadow">
             <a class="text-xl" href="/">KarirKu</a>
             <div class="flex flex-row gap-4">
-                <!-- Edit Navbar nanti pake JavaScript buat yang auth -->
-                <a href="/login">Login</a> 
-                <a href="/register">Register</a>
+                <a href="/cerita-alumni">Cerita Alumni</a>
+                <a href="/informasi-karier">Informasi Karier</a>
+                <a href="/lowongan-kerja">Lowongan Kerja</a>
+                {% if access_token and refresh_token %}
+                    <a href="/profile">Profil Anda</a>
+                {% else %}
+                    <a href="/login">Login</a>
+                    <a href="/register">Register</a>
+                {% endif %}
             </div>
         </nav>
         <div class="pt-[48px] w-full">
