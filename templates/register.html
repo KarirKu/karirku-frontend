@@ -2,66 +2,6 @@
 
 {% block head %}
     <title>Register</title>
-    <style>
-        body {
-            font-family: Arial;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-        form {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.2);
-            width: 300px;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 50px;
-        }
-        input, button, textarea {
-            margin: 10px 0;
-            padding: 10px;
-            width: calc(100% - 20px);
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        button {
-            background-color: #5cb85c;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #4cae4c;
-        }
-        .radio-group {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-        .radio-group label {
-            margin: 0 10px;
-        }
-        .choice {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            width: 100%;
-        }
-        .radio-option {
-            margin: 0 10px;
-            text-align: center;
-        }
-        .radio-option label {
-            display: block; 
-        }
-        .error {
-            color: red;
-            font-size: 0.9em;
-        }
-    </style>
     <script>
         async function registerUser(event) {
             event.preventDefault();
@@ -72,11 +12,9 @@
                     method: 'POST',
                     body: formData
                 });
-
                 if (!response.ok) {
-                    throw new Error('Registration failed');
+                    throw new Error('Registration failed. Check the input');
                 }
-
                 alert('Registration successful. Login to Continue');
                 window.location.href = "/login";
             } catch (error) {
@@ -87,27 +25,105 @@
 {% endblock %}
 
 {% block content %}
-<form onsubmit="registerUser(event)">
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <input type="text" name="nama_lengkap" placeholder="Nama Lengkap" required>
-    <input type="number" name="npm" placeholder="NPM" required minlength="10" maxlength="10">
-    <input type="number" name="nomor_hp" placeholder="Nomor HP" required>
-    <input type="url" name="foto_profil" placeholder="Foto Profil (URL)" required>
-    
-    <div class="choice">
-        <div class="radio-option">
-            <input type="radio" id="alumni" name="user_type" value="alumni" required>
-            <label for="alumni">Alumni</label>
+<div class="min-h-screen flex items-center justify-center bg-gray-100 pt-7">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3">
+      <h2 class="text-2xl font-semibold mb-4 text-center">Register</h2>
+      <form onsubmit="registerUser(event)">
+        <div class="mb-4">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          >
         </div>
-        <div class="radio-option">
-            <input type="radio" id="mahasiswa" name="user_type" value="mahasiswa" required>
-            <label for="mahasiswa">Mahasiswa</label>
+        <div class="mb-4">
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          >
         </div>
+        <div class="mb-4">
+          <input
+            type="text"
+            name="nama_lengkap"
+            placeholder="Nama Lengkap"
+            required
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          >
+        </div>
+        <div class="mb-4">
+          <input
+            type="number"
+            name="npm"
+            placeholder="NPM"
+            required
+            minlength="10"
+            maxlength="10"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          >
+        </div>
+        <div class="mb-4">
+          <input
+            type="number"
+            name="nomor_hp"
+            placeholder="Nomor HP"
+            required
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          >
+        </div>
+        <div class="mb-4">
+          <input
+            type="url"
+            name="foto_profil"
+            placeholder="Foto Profil (URL)"
+            required
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          >
+        </div>
+        <div class="mb-4">
+            <h1 class="text-lg font-semibold mb-2">Daftar Sebagai</h1>
+            <div class="flex items-center space-x-4">
+              <label class="cursor-pointer flex items-center p-2 border border-gray-400 rounded-lg hover:bg-gray-200">
+                <input type="radio" id="alumni" name="user_type" value="alumni" required class="mr-2">
+                Alumni
+              </label>
+              <label class="cursor-pointer flex items-center p-2 border border-gray-400 rounded-lg hover:bg-gray-200">
+                <input type="radio" id="mahasiswa" name="user_type" value="mahasiswa" required class="mr-2">
+                Mahasiswa
+              </label>
+            </div>
+        </div>
+        <div class="mb-4">
+          <textarea
+            name="pendidikan"
+            placeholder="Pendidikan"
+            required
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          ></textarea>
+        </div>
+        <div class="mb-4">
+          <textarea
+            name="pengalaman"
+            placeholder="Pengalaman"
+            required
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          ></textarea>
+        </div>
+        <div class="text-center">
+          <button
+            type="submit"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline-blue active:bg-blue-700"
+          >
+            Register
+          </button>
+        </div>
+      </form>
     </div>
-    
-    <textarea name="pendidikan" placeholder="Pendidikan" required></textarea>
-    <textarea name="pengalaman" placeholder="Pengalaman" required></textarea>
-    <button type="submit">Register</button>
-</form>
+  </div>  
+  
 {% endblock %}
