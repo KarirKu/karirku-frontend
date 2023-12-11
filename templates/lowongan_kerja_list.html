@@ -1,9 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-Sneggs {{ config.BACKEND_URL }}
-<div class="flex flex-row gap-4">
-    <!-- Edit Navbar nanti pake JavaScript buat yang auth -->
-    <a href="/login">Login</a> 
-    <a href="/register">Register</a>
-</div>
+<script>
+    let template = `<div class="w-[300px] h-[250px] rounded-xl shadow-lg overflow-hidden cursor-pointer" onclick="location.href='/lowongan-kerja/1'">
+            <img class="w-full h-[150px] object-cover" src="https://cdn.dribbble.com/users/621402/screenshots/3352689/media/4c150da5848ba175077cb81805abfb89.png?resize=400x300&vertical=center">
+            <div class="w-full py-2 px-4">
+                <h2 class="font-bold truncate">Backend Developer di netsos.com</h2>
+                <span class="text-sm text-gray-400 block">Software Engineer</span>
+                <span class="text-sm text-gray-400">12 Oktober 2023 - 13 Oktober 2023</span>
+            </div>
+        </div>`;
+    
+    function updateLowonganKerja() {
+        
+    }
+</script>
+<div id="lowongan-kerja-list" class="w-full p-[32px] flex flex-row justify-center gap-10 flex-wrap"></div>
 {% endblock %}
