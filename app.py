@@ -1,12 +1,7 @@
 import os
-<<<<<<< HEAD
-from dotenv import load_dotenv
-from flask import Flask, render_template, send_from_directory, request, redirect, url_for
-=======
 import requests
 from dotenv import load_dotenv
 from flask import Flask, render_template, send_from_directory, request, redirect, url_for, make_response
->>>>>>> a21226e227251144c0996cc723d345047a016cc6
 
 from routes.lowongan_kerja import lowongan_kerja_blueprint
 from routes.cerita_alumni import cerita_alumni_blueprint
