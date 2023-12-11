@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
+
+{% block head %}
     <title>Register</title>
     <style>
         body {
             font-family: Arial;
             background-color: #f4f4f4;
             text-align: center;
-            padding-top: 50px;
         }
         form {
             background: #fff;
@@ -21,6 +18,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-top: 50px;
         }
         input, button, textarea {
             margin: 10px 0;
@@ -70,7 +68,7 @@
             const formData = new FormData(event.target);
 
             try {
-                const response = await fetch('https://karirku-backend.meervix.com/user/register', {
+                const response = await fetch('https://karirku-backend.meervix.com/user/register/', {
                     method: 'POST',
                     body: formData
                 });
@@ -79,25 +77,23 @@
                     throw new Error('Registration failed');
                 }
 
-                const result = await response.json();
-                document.cookie = `refresh_token=${result.refresh_token}; path=/`;
-                document.cookie = `access_token=${result.access_token}; path=/`;
-                alert('Registration successful');
+                alert('Registration successful. Login to Continue');
+                window.location.href = "/login";
             } catch (error) {
                 alert(error.message);
             }
         }
     </script>
-</head>
-<body>
+{% endblock %}
 
+{% block content %}
 <form onsubmit="registerUser(event)">
-    <input type="number" name="npm" placeholder="NPM (10 digits)" required minlength="10" maxlength="10">
-    <input type="password" name="password" placeholder="Password" required>
     <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
     <input type="text" name="nama_lengkap" placeholder="Nama Lengkap" required>
+    <input type="number" name="npm" placeholder="NPM" required minlength="10" maxlength="10">
     <input type="number" name="nomor_hp" placeholder="Nomor HP" required>
-    <input type="url" name="foto_profil" placeholder="Foto Profil URL" required>
+    <input type="url" name="foto_profil" placeholder="Foto Profil (URL)" required>
     
     <div class="choice">
         <div class="radio-option">
@@ -114,6 +110,4 @@
     <textarea name="pengalaman" placeholder="Pengalaman" required></textarea>
     <button type="submit">Register</button>
 </form>
-
-</body>
-</html>
+{% endblock %}

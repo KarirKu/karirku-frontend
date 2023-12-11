@@ -30,7 +30,21 @@ def login():
 def register():
     return render_template('register.html')
 
+@app.route('/profile')
+def profile():
+    # Example user data - in a real app, this would come from a database or other data source
+    user_info = {
+        "username": "JohnDoe",
+        "email": "johndoe@example.com",
+        "full_name": "John Doe",
+        "phone_number": "123-456-7890",
+        "profile_pic_url": "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
+        "education": "Bachelor's in Computer Science",
+        "experience": "5 years in software development"
+    }
+    return render_template('profile.html', user=user_info)
+
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=3000, debug=True)
+    app.run(host='localhost', port=3000, debug=True)
 
     
