@@ -38,5 +38,23 @@ def submit():
         scores[value] += 1
 
     top_career = max(scores, key=scores.get)
-   
+    
+    access_token = request.cookies.get('access_token')
+    
+    if access_token:
+        headers = {'Authorization': f'Bearer {access_token}'}
+
+        response = requests.get('https://karirku-backend.meervix.com/user/', headers=headers)
+        if response.status_code == 200:
+            user_info = response.json()
+            user_id = user_info['id']
+            print(user_id)
+            body = {'rekomendasi_karier': top_career}
+            headers = {
+                    'Content-Type': 'application/json',
+                    'Authorization': f'Bearer {access_token}'
+                }
+            response = requests.patch(f'https://karirku-backend.meervix.com/user/{user_id}', headers=headers, json=body)
+        else:
+            return redirect('/logout')         
     return redirect(url_for('personalisasi_karier.personalisasi_karier_index'))
