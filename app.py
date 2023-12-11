@@ -7,6 +7,7 @@ from routes.informasi_karier import informasi_karier_blueprint
 from routes.personalisasi_karier import personalisasi_karier_blueprint
 import requests
 from routes.cerita_alumni import cerita_alumni_blueprint
+from routes.informasi_karier import informasi_karier_blueprint
 
 load_dotenv()
 
