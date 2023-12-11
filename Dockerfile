@@ -1,5 +1,9 @@
 FROM python:3.11.2-bullseye
 
+ARG BACKEND_URL
+
+ENV BACKEND_URL=${BACKEND_URL}
+
 RUN apt-get update
 
 COPY requirements.txt /tmp/requirements.txt
