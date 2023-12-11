@@ -2,7 +2,7 @@
 
 {% block head %}
 <script>
-  function updateLowonganKerjaHTML(loker, idToKarier, user, publisherId) {
+  function updateLowonganKerjaHTML(loker, idToKarier, user, publisher) {
       const infoHTML = document.getElementById('info-loker');
       
       const detailButton = `<button
@@ -38,10 +38,10 @@
         
       let lokerButtons = '';
       lokerButtons += detailButton;
-      if (user.id == publisherId) {
+      if (user && user.id == publisher.id) {
         lokerButtons += editButton;
       }
-      if (user.id == publisherId || user.user_type == 'admin') {
+      if (user && (user.id == publisher.id || user.user_type == 'admin')) {
         lokerButtons += deleteButton;
       }
       lokerButtons += backButton;
@@ -51,8 +51,8 @@
         <div class="text-base">
           <span class="block"><span class="font-bold">Posisi:</span> <span id="posisi">${loker.posisi}</span></span>
           <span class="block"><span class="font-bold">Karier:</span> <span id="karier">${idToKarier[loker.karier]}</span></span>
-          <span class="block"><span class="font-bold">Instansi:</span> <span id="instansi">${loker.instansi}</span></span>
-          <span class="block"><span class="font-bold">Publisher:</span> <span id="publisher">${loker.publisher}</span></span>
+          <span class="block"><span class="font-bold">Instansi:</span> <span id="instansi">${loker.nama_instansi}</span></span>
+          <span class="block"><span class="font-bold">Publisher:</span> <span id="publisher">${publisher.nama_lengkap}</span></span>
           <span class="block"><span class="font-bold">Durasi:</span> <span id="durasi">${convertISOToDateTimeFormatted(loker.tanggal_buka)} WIB - ${convertISOToDateTimeFormatted(loker.tanggal_tutup)} WIB</span></span>
           <div class="w-full h-[1.5px] rounded-full bg-gray-200 my-2"></div>
           <span class="block font-bold">Deskripsi:</span>
@@ -67,7 +67,7 @@
   }
   
   async function updateLowonganKerja() {
-      let user = {};
+      let user = undefined;
       try {
           const response = await fetch('{{ config.BACKEND_URL }}/user/', {
             headers: {
@@ -79,7 +79,7 @@
           }
           user = await response.json();
       } catch (error) {
-          alert(error.message);
+        
       }
       
       const idToKarier = {};
@@ -96,16 +96,29 @@
           alert(error.message);
       }
       
+      let loker = {};
       try {
           const response = await fetch('{{ config.BACKEND_URL }}/lowongan-kerja/detail/{{ lowongan_kerja_id }}/');
           if (!response.ok) {
               throw new Error('Failed to fetch lowongan kerja from server.');
           }
-          const loker = await response.json();
-          updateLowonganKerjaHTML(loker, idToKarier, user, '{{ lowongan_kerja_id }}');
+          loker = await response.json();
       } catch (error) {
           alert(error.message);
       }
+      
+      let alumni = {};
+      try {
+          const response = await fetch(`{{ config.BACKEND_URL }}/user/${loker.alumni}/`);
+          if (!response.ok) {
+              throw new Error('Failed to fetch alumni from server.');
+          }
+          alumni = await response.json();
+      } catch (error) {
+          alert(error.message);
+      }
+      
+      updateLowonganKerjaHTML(loker, idToKarier, user, alumni);
   }
   
   document.addEventListener('DOMContentLoaded', updateLowonganKerja, false);
