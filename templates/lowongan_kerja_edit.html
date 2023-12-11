@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script>
+    async function getKarier() {
+        const selectKarier = document.getElementById('karier-list');
+        try {
+            const response = await fetch('https://karirku-backend.meervix.com/informasi-karier/all/');
+            if (!response.ok) {
+                throw new Error('Failed to fetch karier from server.');
+            }
+            const karierList = await response.json();
+            let innerHTML = '<option value="" selected disabled hidden>Karier</option>';
+            for (let i = 0; i < karierList.length; i++) {
+                innerHTML +=  `<option value="${karierList[i].id}">${karierList[i].nama}</option>`;
+            }
+            selectKarier.innerHTML = innerHTML;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+    
+    async function editLowonganKerja(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        formData.append('karier', document.getElementById('karier-list').value);
+
+        try {
+            const response = await fetch('https://karirku-backend.meervix.com/lowongan-kerja/edit/{{ lowongan_kerja_id }}/', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + Cookies.get('access_token'),
+                },
+                body: formData,
+            });
+            if (!response.ok) {
+                throw new Error('Operation failed. Check the input');
+            }
+            alert('Edited lowongan kerja.');
+            window.location.href = "/lowongan-kerja/";
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+    
+    async function getData() {
+        console.log('hee');
+        await getKarier();
+        console.log('owos');
+        try {
+            console.log('owo');
+            const response = await fetch('https://karirku-backend.meervix.com/lowongan-kerja/detail/{{ lowongan_kerja_id }}/');
+            if (!response.ok) {
+                throw new Error('Failed to fetch lowongan kerja from server.');
+            }
+            const loker = await response.json();
+            document.getElementById('posisi').value = loker.posisi;
+            document.getElementById('instansi').value = loker.nama_instansi;
+            document.getElementById('link').value = loker.link;
+            document.getElementById('tanggal-buka').value = convertISOToInputFormat(loker.tanggal_buka);
+            document.getElementById('tanggal-tutup').value = convertISOToInputFormat(loker.tanggal_tutup);
+            document.getElementById('karier-list').value = loker.karier;
+            document.getElementById('deskripsi').value = loker.deskripsi;
+            document.getElementById('eligibilitas').value = loker.eligibilitas;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', getData, false);
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="info-loker" class="w-full py-[40px] flex justify-center items-center">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full sm:w-[75%] md:w-[66%] lg:w-[50%] xl:w-[40%]">
+        <h2 class="text-2xl font-semibold mb-4 text-center">Sunting Lowongan Kerja</h2>
+        <form onsubmit="editLowonganKerja(event)">
+            <div class="mb-4">
+                <input
+                    id="posisi"
+                    type="text"
+                    name="posisi"
+                    placeholder="Posisi"
+                    required
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                >
+            </div>
+            <div class="mb-4">
+                <input
+                    id="instansi"
+                    type="text"
+                    name="nama_instansi"
+                    placeholder="Nama Instansi"
+                    required
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                >
+            </div>
+            <div class="mb-4">
+                <select id="karier-list" nama="karier" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                    <option value="" selected disabled hidden>Loading...</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <input
+                    id="link"
+                    type="url"
+                    name="link"
+                    placeholder="Link Details"
+                    required
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                >
+            </div>
+            <div class="mb-4 flex flex-row items-center justify-between">
+                <input
+                    id="tanggal-buka"
+                    type="datetime-local"
+                    name="tanggal_buka"
+                    placeholder="Tanggal Buka"
+                    required
+                    class="w-[45%] px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                >
+                -
+                <input
+                    id="tanggal-tutup"
+                    type="datetime-local"
+                    name="tanggal_tutup"
+                    placeholder="Tanggal Tutup"
+                    required
+                    class="w-[45%] px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                >
+            </div>
+            <div class="mb-4">
+                <textarea
+                    id="deskripsi"
+                    name="deskripsi"
+                    placeholder="Deskripsi"
+                    required
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                ></textarea>
+            </div>
+            <div class="mb-4">
+                <textarea
+                    id="eligibilitas"
+                    name="eligibilitas"
+                    placeholder="Eligibilitas"
+                    required
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                ></textarea>
+            </div>
+            <div class="text-center">
+                <button
+                    type="submit"
+                    class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline-blue active:bg-blue-700"
+                >
+                    Submit
+                </button>
+                <button
+                    type="button"
+                    onclick="location.href='/lowongan-kerja'"
+                    class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline-red active:bg-red-700"
+                >
+                    Kembali
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
