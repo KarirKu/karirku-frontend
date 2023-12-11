@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        {% block head %}
-        <title>Birthday Card</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdn.tailwindcss.com"></script>
+        {% block head %}
         {% endblock %}
     </head>
     <body class="text-lg">
         <nav class="fixed p-4 flex flex-row w-full h-[48px] bg-white font-bold items-center justify-between shadow">
             <a class="text-xl" href="/">KarirKu</a>
             <div class="flex flex-row gap-4">
-                <!-- Edit Navbar nanti pake JavaScript buat yang auth -->
-                <a href="/login">Login</a> 
-                <a href="/register">Register</a>
+                {% if access_token and refresh_token %}
+                    <a href="/profile">Profil Anda</a>
+                {% else %}
+                    <a href="/login">Login</a>
+                    <a href="/register">Register</a>
+                {% endif %}
             </div>
         </nav>
         <div class="pt-[48px] w-full">
