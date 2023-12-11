@@ -38,4 +38,5 @@ jobs:
             docker image rm -f karirku-frontend
             docker load -i images/karirku-frontend.tar
             docker run --name karirku-frontend -d --restart always -p 3000:3000 karirku-frontend
+            rm images/karirku-frontend.tar
           
