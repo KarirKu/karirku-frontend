@@ -15,7 +15,8 @@
             });
 
             if (!response.ok) {
-                throw new Error('Login failed');
+                alert('Login failed. Check your email or password!');
+                return;
             }
 
             const result = await response.json();
