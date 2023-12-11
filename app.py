@@ -1,19 +1,91 @@
 import os
-from flask import Flask, send_from_directory
+import requests
+from dotenv import load_dotenv
+from flask import Flask, render_template, send_from_directory, request, redirect, url_for, make_response
 
 from routes.lowongan_kerja import lowongan_kerja_blueprint
 from routes.cerita_alumni import cerita_alumni_blueprint
 
+load_dotenv()
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32).hex()
+app.config['BACKEND_URL'] = os.environ.get('BACKEND_URL', 'http://localhost:8000')
 
 app.register_blueprint(lowongan_kerja_blueprint)
 app.register_blueprint(cerita_alumni_blueprint)
+
+@app.context_processor
+def inject_cookies():
+    access_token = request.cookies.get('access_token')
+    refresh_token = request.cookies.get('refresh_token')
+    return dict(access_token=access_token, refresh_token=refresh_token)
 
 @app.route('/public/<path:path>/', methods=['GET'])
 def static_files(path):
     return send_from_directory('public', path)
 
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or request.form['password'] != 'secret':
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            return redirect(url_for('home'))
+    return render_template('login.html', error=error)
+
+@app.route('/register', methods=['GET'])
+def register():
+    return render_template('register.html')
+
+@app.route('/profile')
+def profile():
+    access_token = request.cookies.get('access_token')
+
+    if access_token:
+        headers = {'Authorization': f'Bearer {access_token}'}
+
+        response = requests.get('https://karirku-backend.meervix.com/user/', headers=headers)
+
+        if response.status_code == 200:
+            user_info = response.json()
+            return render_template('profile.html', user=user_info)
+        else:
+            return redirect('/logout')
+    else:
+        return "Access token not found", 401
+
+@app.route('/edit-profile')
+def edit_profile():
+    access_token = request.cookies.get('access_token')
+
+    if access_token:
+        headers = {'Authorization': f'Bearer {access_token}'}
+
+        response = requests.get('https://karirku-backend.meervix.com/user/', headers=headers)
+
+        if response.status_code == 200:
+            user_info = response.json()
+            return render_template('edit-profile.html', user=user_info)
+        else:
+            return redirect('/logout')
+    else:
+        return "Access token not found", 401
+    
+@app.route('/logout')
+def logout():
+    response = make_response(redirect('/'))
+
+    response.set_cookie('access_token', '', expires=0)
+    response.set_cookie('refresh_token', '', expires=0)
+
+    return response
+
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1', port=3000)
+    app.run(host='localhost', port=3000, debug=True)
     
