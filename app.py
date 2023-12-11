@@ -1,16 +1,14 @@
 import os
-from dotenv import load_dotenv
 from flask import Flask, render_template, send_from_directory, request, redirect, url_for
 
 from routes.lowongan_kerja import lowongan_kerja_blueprint
-
-load_dotenv()
+from routes.informasi_karier import informasi_karier_blueprint
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32).hex()
-app.config['BACKEND_URL'] = os.environ.get('BACKEND_URL', 'http://localhost:8000')
 
 app.register_blueprint(lowongan_kerja_blueprint)
+app.register_blueprint(informasi_karier_blueprint)
 
 @app.route('/public/<path:path>/', methods=['GET'])
 def static_files(path):
@@ -49,6 +47,6 @@ def profile():
     return render_template('profile.html', user=user_info)
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=3000, debug=True)
+    app.run(host='localhost', port=3001, debug=True)
 
     
