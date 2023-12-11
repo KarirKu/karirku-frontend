@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Informasi Karier</title>
+{% endblock %}
+
+{% block content %}
+<!-- <div class="flex flex-row gap-4"> -->
+    <!-- Edit Navbar nanti pake JavaScript buat yang auth -->
+    <!-- <a href="/login">Login</a> 
+    <a href="/register">Register</a>
+</div> -->
+
+<h1 style="text-align: center;" class="text-xl font-bold">
+    Informasi Karier
+</h1>
+
+<h1>logged in as {{ user.user_type }}</h1>
+
+{% if user.user_type == 'admin' %}
+<div class="flex flex-row justify-end">
+    <button class="px-4 py-3 my-3 mx-0.5 bg-yellow-500 text-white rounded-full" type="button" onclick="addKarier()">Tambah Informasi Karier</button>
+</div>
+{% endif %}
+
+
+<div class="flex flex-row">
+    <div class="flex flex-col">
+        {% for karier in kariers %}
+        {% if user.user_type == 'admin' %}
+        <div class="flex flex-row">
+            <button class="px-28 py-3 my-3 mx-0.5 bg-gray-500 text-white rounded-lg" type="button" onclick="displayMessage(`{{karier}}`)">{{ karier.nama }}</button>
+            <button class="px-5 py-3 my-3 mx-0.5 bg-green-500 text-white rounded-full" type="button" onclick="editKarier(`{{karier.id}}`)">edit</button>
+            <button class="px-5 py-3 my-3 mx-0.5 bg-red-500 text-white rounded-full" type="button" onclick="deleteKarier(`{{karier.id}}`)">delete</button>
+        </div>
+        {% else %}
+        <button class="px-32 py-4 my-3 mx-2 bg-gray-500 text-white rounded-lg" type="button" onclick="displayMessage(`{{karier}}`)">{{ karier.nama }}</button>
+        {% endif %}
+        
+        {% endfor %}
+    </div>
+
+    <div id="output" class="px-28 py-2 my-5 mx-2"></div>
+</div>
+
+<script>
+    // JavaScript function to display a message
+    function displayMessage(message) {
+        var outputElement = document.getElementById('output');
+        var jsonMsg = message.replace(/'/g, '"');
+        var karier = JSON.parse(jsonMsg);
+
+        outputElement.innerHTML  = '<p class="text-gray-700">nama karier         : ' + karier.nama + '</p>';
+        outputElement.innerHTML += '<p class="text-gray-700">deskripsi pekerjaan : ' + karier.deskripsi_pekerjaan + '</p>';
+        outputElement.innerHTML += '<p class="text-gray-700">kompetensi          : ' + karier.kompetensi + '</p>';
+        outputElement.innerHTML += '<p class="text-gray-700">tanggung jawab      : ' + karier.tanggung_jawab + '</p>';
+    }
+
+    function addKarier() {
+        window.location.href = "new";
+    }
+
+    function editKarier(id) {
+        window.location.href = "edit/"+id;
+    }
+
+    async function deleteKarier(id) {
+      try {
+          const response = await fetch('https://karirku-backend.meervix.com/informasi-karier/delete/'+id+'/', {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + Cookies.get('access_token'),
+            },
+          });
+          if (!response.ok) {
+              throw new Error('Failed to delete informasi karier.');
+          }
+          alert('Deleted informasi karier.');
+          location.href='/informasi-karier/'
+      } catch (error) {
+          alert(error.message);
+      }
+  }
+</script>
+{% endblock %}
