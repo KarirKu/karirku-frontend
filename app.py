@@ -6,11 +6,11 @@ from flask import Flask, render_template, send_from_directory, request, redirect
 from routes.lowongan_kerja import lowongan_kerja_blueprint
 from routes.cerita_alumni import cerita_alumni_blueprint
 
-# load_dotenv()
+load_dotenv()
 
 app = Flask(__name__)
-# app.config['SECRET_KEY'] = os.urandom(32).hex()
-# app.config['BACKEND_URL'] = os.environ.get('BACKEND_URL', 'http://localhost:8000')
+app.config['SECRET_KEY'] = os.urandom(32).hex()
+app.config['BACKEND_URL'] = os.environ.get('BACKEND_URL', 'http://localhost:8000')
 
 app.register_blueprint(lowongan_kerja_blueprint)
 app.register_blueprint(cerita_alumni_blueprint)
