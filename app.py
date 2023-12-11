@@ -1,10 +1,14 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask, render_template, send_from_directory, request, redirect, url_for, make_response
 
 from routes.lowongan_kerja import lowongan_kerja_blueprint
 from routes.informasi_karier import informasi_karier_blueprint
 from routes.personalisasi_karier import personalisasi_karier_blueprint
 import requests
+from routes.cerita_alumni import cerita_alumni_blueprint
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32).hex()
@@ -12,6 +16,13 @@ app.config['SECRET_KEY'] = os.urandom(32).hex()
 app.register_blueprint(lowongan_kerja_blueprint)
 app.register_blueprint(informasi_karier_blueprint)
 app.register_blueprint(personalisasi_karier_blueprint)
+app.register_blueprint(cerita_alumni_blueprint)
+
+@app.context_processor
+def inject_cookies():
+    access_token = request.cookies.get('access_token')
+    refresh_token = request.cookies.get('refresh_token')
+    return dict(access_token=access_token, refresh_token=refresh_token)
 
 @app.route('/public/<path:path>/', methods=['GET'])
 def static_files(path):
@@ -79,6 +90,5 @@ def logout():
     return response
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=3001, debug=True)
-
+    app.run(host='localhost', port=3000, debug=True)
     
