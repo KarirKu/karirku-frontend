@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Informasi Karier</title>
+{% endblock %}
+
+{% block content %}
+<!-- <div class="flex flex-row gap-4"> -->
+    <!-- Edit Navbar nanti pake JavaScript buat yang auth -->
+    <!-- <a href="/login">Login</a> 
+    <a href="/register">Register</a>
+</div> -->
+
+<h1 style="text-align: center;" class="text-xl font-bold">
+    Informasi Karier
+</h1>
+
+<div class="flex flex-row">
+    <div class="flex flex-col">
+        {% for karier in kariers %}
+        <button class="px-28 py-4 my-3 mx-3 bg-gray-500 text-white rounded-lg" type="button" onclick="displayMessage(`{{karier}}`)">{{ karier.nama }}</button>
+        {% endfor %}
+    </div>
+
+    <div id="output" class="px-32 py-2 my-5 mx-3"></div>
+</div>
+
+<script>
+    // JavaScript function to display a message
+    function displayMessage(message) {
+        var outputElement = document.getElementById('output');
+        var jsonMsg = message.replace(/'/g, '"');
+        var karier = JSON.parse(jsonMsg);
+
+        outputElement.innerHTML  = '<p class="text-gray-700">nama karier         : ' + karier.nama + '</p>';
+        outputElement.innerHTML += '<p class="text-gray-700">deskripsi pekerjaan : ' + karier.deskripsi_pekerjaan + '</p>';
+        outputElement.innerHTML += '<p class="text-gray-700">kompetensi          : ' + karier.kompetensi + '</p>';
+        outputElement.innerHTML += '<p class="text-gray-700">tanggung jawab      : ' + karier.tanggung_jawab + '</p>';
+    }
+</script>
+{% endblock %}

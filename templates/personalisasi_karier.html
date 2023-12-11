@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block head %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,15 +8,18 @@
     <title> Personalisasi Karier </title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 </head>
+{% endblock %}
+{% block content %}
 <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-16">
         <h1 class="text-4xl font-bold mb-4"> Personalisasi Karier </h1>
+
         <p class="mb-8">Berdasarkan hasil kuis kamu, kamu mendapatkan karier di bidang ... </p>
 
         <div class="bg-white shadow-lg rounded-lg p-8">
             <h2 class="text-2xl font-bold mb-4"> Software (Perangkat Lunak) </h2>
             <p class="mb-4"> Software adalah blablabla.... </p>
-            
+
             <div class="mb-4">
                 <a href="/learn-more" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-block"> Lihat Rekomendasi Karier </a>
             </div>
@@ -26,3 +31,4 @@
     </div>
 </body>
 </html>
+{% endblock %}
