@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="w-full py-[40px] flex justify-center items-center">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full sm:w-[75%] md:w-[66%] lg:w-[50%] xl:w-[40%]">
+    <h2 class="text-2xl font-semibold mb-4 text-center">Informasi Lowongan Kerja</h2>
+    <div class="text-base">
+      <span class="block"><span class="font-bold">Posisi:</span> Backend Developer</span>
+      <span class="block"><span class="font-bold">Karier:</span> Software Engineer</span>
+      <span class="block"><span class="font-bold">Instansi:</span> netsos.com</span>
+      <span class="block"><span class="font-bold">Publisher:</span> Michael</span>
+      <span class="block"><span class="font-bold">Durasi:</span> 12 Agustus 2023 15:00 WIB - 13 Agustus 2023 18:00 WIB</span>
+      <div class="w-full h-[1.5px] rounded-full bg-gray-200 my-2"></div>
+      <span class="block font-bold">Deskripsi:</span>
+      <p class="text-justify">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+      <div class="w-full h-[1.5px] rounded-full bg-gray-200 my-2"></div>
+      <span class="block font-bold mt-2">Eligibilitas:</span>
+      <p class="text-justify">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+      <div class="w-full h-[1.5px] rounded-full bg-gray-200 my-2"></div>
+      <div class="w-full flex flex-row justify-center gap-2">
+        <button
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline-blue active:bg-blue-700"
+          onclick="window.open('https://google.com')"
+        >
+          Lihat Detail
+        </button>
+        <button
+          class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline-green active:bg-green-800"
+          onclick="window.open('https://google.com')"
+        >
+          Sunting
+        </button>
+        <button
+          class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline-red active:bg-red-700"
+          onclick="window.open('https://google.com')"
+        >
+          Hapus
+        </button>
+        <button
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline-blue active:bg-blue-700"
+          onclick="location.href='/lowongan-kerja/'"
+        >
+          Kembali
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

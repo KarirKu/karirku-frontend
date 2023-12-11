@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask, render_template, send_from_directory, request, redirect, url_for
 
 from routes.lowongan_kerja import lowongan_kerja_blueprint

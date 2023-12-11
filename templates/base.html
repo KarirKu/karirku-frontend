@@ -2,11 +2,30 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Karirku</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+        <script>
+            function convertISOToDateFormatted(isoDate) {
+                const date = new Date(isoDate);
+                
+                const indonesianMonths = [
+                "Januari", "Februari", "Maret", "April",
+                "Mei", "Juni", "Juli", "Agustus",
+                "September", "Oktober", "November", "Desember"
+                ];
+                
+                const day = date.getDate();
+                const month = indonesianMonths[date.getMonth()];
+                const year = date.getFullYear();
+                
+                return `${day} ${month} ${year}`;
+            }
+        </script>
         {% block head %}
         {% endblock %}
     </head>
-    <body class="text-lg">
+    <body class="text-lg bg-gray-100">
         <nav class="fixed p-4 flex flex-row w-full h-[48px] bg-white font-bold items-center justify-between shadow">
             <a class="text-xl" href="/">KarirKu</a>
             <div class="flex flex-row gap-4">
